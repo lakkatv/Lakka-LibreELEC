@@ -229,7 +229,7 @@ def get_build_steps(args, nodes, trigger_pkgs, built_pkgs):
     for pkg in resolved:
         if pkg.fqname not in built_pkgs:
             built_pkgs.append(pkg.fqname)
-            task = "build" if pkg.fqname.endswith(":host") or not install else "install"
+            task = "build" if pkg.fqname.endswith(":host") or pkg.fqname.endswith(":init") or not install else "install"
             yield(task, pkg.fqname)
 
 # Reduce the complete list of packages to a map of those packages that will

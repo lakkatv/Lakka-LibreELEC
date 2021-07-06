@@ -37,7 +37,6 @@ THREAD_CONTROL=${BUILD}/.threads
 
 TARGET_ADDONS="$TARGET_IMG/$ADDONS/$ADDON_PATH"
 ADDON_BUILD="$BUILD/$ADDONS/$1"
-STAMPS_NOARCH=.stamps
 STAMPS=$BUILD/.stamps
 STAMPS_INSTALL=$BUILD/image/.stamps
 DOCS=DOCS
@@ -61,7 +60,6 @@ FAKEROOT_SCRIPT=$BUILD/.fakeroot
 if [ -z "$INSTALL" ]; then
   INSTALL=$BUILD/image/system
 fi
-INSTALL_INIT=$BUILD/image/initramfs/root-image
 
 . config/sources
 

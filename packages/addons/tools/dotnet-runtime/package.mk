@@ -42,13 +42,13 @@ addon() {
         $ADDON_BUILD/$PKG_ADDON_ID/bin
 
   mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/libs
-  cp -L $(get_build_dir curl3)/.install_pkg/usr/lib/libcurl.so.? \
-        $(get_build_dir krb5)/.install_pkg/usr/lib/libcom_err.so.? \
-        $(get_build_dir krb5)/.install_pkg/usr/lib/libgssapi_krb5.so.? \
-        $(get_build_dir krb5)/.install_pkg/usr/lib/libk5crypto.so.? \
-        $(get_build_dir krb5)/.install_pkg/usr/lib/libkrb5.so.? \
-        $(get_build_dir krb5)/.install_pkg/usr/lib/libkrb5support.so.? \
-        $(get_build_dir lttng-ust)/.install_pkg/usr/lib/liblttng-ust.so.? \
-        $(get_build_dir lttng-ust)/.install_pkg/usr/lib/liblttng-ust-tracepoint.so.? \
+  cp -L $(get_install_dir curl3)/usr/lib/libcurl.so.? \
+        $(get_install_dir krb5)/usr/lib/libcom_err.so.? \
+        $(get_install_dir krb5)/usr/lib/libgssapi_krb5.so.? \
+        $(get_install_dir krb5)/usr/lib/libk5crypto.so.? \
+        $(get_install_dir krb5)/usr/lib/libkrb5.so.? \
+        $(get_install_dir krb5)/usr/lib/libkrb5support.so.? \
+        $(get_install_dir lttng-ust)/usr/lib/liblttng-ust.so.? \
+        $(get_install_dir lttng-ust)/usr/lib/liblttng-ust-tracepoint.so.? \
         $ADDON_BUILD/$PKG_ADDON_ID/libs
 }

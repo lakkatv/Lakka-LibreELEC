@@ -14,6 +14,7 @@ PKG_SECTION="service"
 PKG_SHORTDESC="Simple Network Management Protocol utilities."
 PKG_LONGDESC="Simple Network Management Protocol (SNMP) is a widely used protocol for monitoring the health and welfare of network equipment."
 PKG_TOOLCHAIN="autotools"
+PKG_BUILD_FLAGS="-sysroot"
 
 PKG_IS_ADDON="yes"
 PKG_ADDON_NAME="Net-SNMP"
@@ -48,10 +49,10 @@ make_target() {
 }
 
 makeinstall_target() {
-  make install INSTALL_PREFIX=$PKG_BUILD/.$TARGET_NAME
+  make install INSTALL_PREFIX=$INSTALL
 }
 
 addon() {
   mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/lib
-  cp -r $PKG_BUILD/.$TARGET_NAME/storage/.kodi/addons/${PKG_ADDON_ID}/bin $PKG_BUILD/.$TARGET_NAME/storage/.kodi/userdata/addon_data/${PKG_ADDON_ID}/share $ADDON_BUILD/$PKG_ADDON_ID/
+  cp -r $PKG_INSTALL/storage/.kodi/addons/${PKG_ADDON_ID}/bin $PKG_INSTALL/storage/.kodi/userdata/addon_data/${PKG_ADDON_ID}/share $ADDON_BUILD/$PKG_ADDON_ID/
 }

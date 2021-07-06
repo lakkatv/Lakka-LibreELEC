@@ -15,5 +15,5 @@ pre_configure_target() {
 }
 
 pre_makeinstall_target() {
-  mkdir -p $PKG_BUILD/.install_pkg
+  mkdir -p $INSTALL
 }

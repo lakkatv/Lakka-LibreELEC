@@ -38,14 +38,14 @@ addon() {
   cp -PL $(get_build_dir atk)/.$TARGET_NAME/atk/libatk-1.0.so.0 $ADDON_BUILD/$PKG_ADDON_ID/lib
 
   # cairo
-  cp -PL $(get_build_dir cairo)/.install_pkg/usr/lib/libcairo-gobject.so.2 $ADDON_BUILD/$PKG_ADDON_ID/lib
-  cp -PL $(get_build_dir cairo)/.install_pkg/usr/lib/libcairo.so.2 $ADDON_BUILD/$PKG_ADDON_ID/lib
+  cp -PL $(get_install_dir cairo)/usr/lib/libcairo-gobject.so.2 $ADDON_BUILD/$PKG_ADDON_ID/lib
+  cp -PL $(get_install_dir cairo)/usr/lib/libcairo.so.2 $ADDON_BUILD/$PKG_ADDON_ID/lib
 
   # gdk-pixbuf
-  cp -PL $(get_build_dir gdk-pixbuf)/.install_pkg/usr/lib/libgdk_pixbuf-2.0.so.0 $ADDON_BUILD/$PKG_ADDON_ID/lib
+  cp -PL $(get_install_dir gdk-pixbuf)/usr/lib/libgdk_pixbuf-2.0.so.0 $ADDON_BUILD/$PKG_ADDON_ID/lib
 
   # gdk-pixbuf modules
-  cp -PL $(get_build_dir gdk-pixbuf)/.install_pkg/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders/* $ADDON_BUILD/$PKG_ADDON_ID/gdk-pixbuf-modules
+  cp -PL $(get_install_dir gdk-pixbuf)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders/* $ADDON_BUILD/$PKG_ADDON_ID/gdk-pixbuf-modules
 
   # gtk3 gdk3
   cp -PL $(get_build_dir gtk3)/.$TARGET_NAME/gtk/.libs/libgtk-3.so.0 $ADDON_BUILD/$PKG_ADDON_ID/lib
@@ -62,7 +62,7 @@ addon() {
   cp -PL $(get_build_dir at-spi2-core)/.$TARGET_NAME/atspi/libatspi.so.0 $ADDON_BUILD/$PKG_ADDON_ID/lib
 
   # libcups
-  cp -PL $(get_build_dir cups)/cups/libcups.so.2 $ADDON_BUILD/$PKG_ADDON_ID/lib
+  cp -PL $(get_install_dir cups)/usr/lib/libcups.so.2 $ADDON_BUILD/$PKG_ADDON_ID/lib
 
   # libxcb
   cp -PL $(get_build_dir chrome-libxcb)/.$TARGET_NAME/src/.libs/libxcb.so.1 $ADDON_BUILD/$PKG_ADDON_ID/lib
@@ -98,5 +98,5 @@ addon() {
   cp -PL $(get_build_dir pango)/.$TARGET_NAME/pango/libpangoft2-1.0.so.0 $ADDON_BUILD/$PKG_ADDON_ID/lib
 
   # unclutter
-  cp -P $(get_build_dir unclutter)/.install_pkg/usr/bin/unclutter $ADDON_BUILD/$PKG_ADDON_ID/bin
+  cp -P $(get_install_dir unclutter)/usr/bin/unclutter $ADDON_BUILD/$PKG_ADDON_ID/bin
 }

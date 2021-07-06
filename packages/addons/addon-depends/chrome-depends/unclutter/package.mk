@@ -16,6 +16,6 @@ make_target() {
 }
 
 makeinstall_target() {
-  mkdir -p .install_pkg/usr/bin
-  install -m 755 unclutter .install_pkg/usr/bin/
+  mkdir -p $INSTALL/usr/bin
+  install -m 755 unclutter $INSTALL/usr/bin/
 }

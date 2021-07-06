@@ -32,6 +32,6 @@ make_target() {
 
 addon() {
   mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin
-  cp $PKG_BUILD/.install_pkg/usr/sbin/* \
+  cp $PKG_INSTALL/usr/sbin/* \
      $ADDON_BUILD/$PKG_ADDON_ID/bin
 }

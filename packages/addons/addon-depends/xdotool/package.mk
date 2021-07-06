@@ -39,8 +39,8 @@ make_target() {
 }
 
 makeinstall_target() {
-  mkdir -p .install_pkg/usr/{lib,bin}
-  cp xdotool .install_pkg/usr/bin
-  cp libxdo* .install_pkg/usr/lib
+  mkdir -p $INSTALL/usr/{lib,bin}
+  cp xdotool $INSTALL/usr/bin
+  cp libxdo* $INSTALL/usr/lib
   cp libxdo* ${TOOLCHAIN}/aarch64-libreelec-linux-gnueabi/sysroot/usr/lib/
 }

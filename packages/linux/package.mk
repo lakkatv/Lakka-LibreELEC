@@ -6,9 +6,8 @@ PKG_NAME="linux"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kernel.org"
 PKG_DEPENDS_HOST="ccache:host openssl:host"
-PKG_DEPENDS_TARGET="toolchain linux:host kmod:host xz:host wireless-regdb keyutils $KERNEL_EXTRA_DEPENDS_TARGET"
-PKG_DEPENDS_INIT="toolchain"
-PKG_NEED_UNPACK="$LINUX_DEPENDS $(get_pkg_directory busybox)"
+PKG_DEPENDS_TARGET="toolchain linux:host kmod:host xz:host wireless-regdb keyutils initramfs:init $KERNEL_EXTRA_DEPENDS_TARGET"
+PKG_NEED_UNPACK="$LINUX_DEPENDS $(get_pkg_directory initramfs) $(get_pkg_variable initramfs PKG_NEED_UNPACK)"
 PKG_LONGDESC="This package contains a precompiled kernel image and the modules."
 PKG_IS_KERNEL_PKG="yes"
 PKG_STAMP="$KERNEL_TARGET $KERNEL_MAKE_EXTRACMD"
@@ -193,6 +192,7 @@ makeinstall_host() {
 pre_make_target() {
   ( cd $ROOT
     rm -rf $BUILD/initramfs
+    rm -f ${STAMPS_INSTALL}/initramfs/install_target ${STAMPS_INSTALL}/*/install_init
     $SCRIPTS/install initramfs
   )
   pkg_lock_status "ACTIVE" "linux:target" "build"
@@ -308,6 +308,9 @@ make_target() {
 }
 
 makeinstall_target() {
+  mkdir -p $INSTALL/.image
+  cp -p arch/${TARGET_KERNEL_ARCH}/boot/${KERNEL_TARGET} System.map $INSTALL/.image/
+
   kernel_make INSTALL_MOD_PATH=$INSTALL/$(get_kernel_overlay_dir) modules_install
   rm -f $INSTALL/$(get_kernel_overlay_dir)/lib/modules/*/build
   rm -f $INSTALL/$(get_kernel_overlay_dir)/lib/modules/*/source
@@ -342,9 +345,7 @@ makeinstall_target() {
     done
     cp -p arch/$TARGET_KERNEL_ARCH/boot/dts/overlays/README $INSTALL/usr/share/bootloader/overlays
   fi
-}
 
-post_install() {
   mkdir -p $INSTALL/$(get_full_firmware_dir)/
   # regdb and signature is now loaded as firmware by 4.15+
     if grep -q ^CONFIG_CFG80211_REQUIRE_SIGNED_REGDB= $PKG_BUILD/.config; then

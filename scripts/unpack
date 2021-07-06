@@ -27,11 +27,11 @@ fi
 
 STAMP="${PKG_BUILD}/.libreelec-unpack"
 
-mkdir -p ${BUILD}
+mkdir -p ${BUILD}/build
 
 # Perform a wildcard match on the package to ensure old versions are cleaned too
 PKG_DEEPHASH=
-for i in ${BUILD}/${PKG_NAME}-*; do
+for i in ${BUILD}/build/${PKG_NAME}-*; do
   if [ -d ${i} -a -f "${i}/.libreelec-unpack" ] ; then
     . "${i}/.libreelec-unpack"
     if [ "${STAMP_PKG_NAME}" = "${PKG_NAME}" ]; then

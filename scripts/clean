@@ -14,8 +14,10 @@ clean_package() {
     return
   fi
 
-  # Use a wilcard here to remove all versions of the package
-  for i in "${BUILD}/${1}-"*; do
+  # Use a wildcard here to remove all versions of the package
+  for i in "${BUILD}/build/${1}-"* \
+           "${BUILD}/install_pkg/${1}-"* \
+           "${BUILD}/install_init/${1}-"*; do
     if [ -d "${i}" -a -f "${i}/.libreelec-unpack" ]; then
       . "${i}/.libreelec-unpack"
       if [ "${STAMP_PKG_NAME}" = "${1}" ]; then

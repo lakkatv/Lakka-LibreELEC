@@ -9,7 +9,7 @@ PKG_SITE="https://ffmpeg.org"
 PKG_URL="https://ffmpeg.org/releases/ffmpeg-$PKG_VERSION.tar.xz"
 PKG_DEPENDS_TARGET="toolchain aom bzip2 gnutls libvorbis opus x264 zlib"
 PKG_LONGDESC="FFmpegx is an complete FFmpeg build to support encoding and decoding."
-PKG_BUILD_FLAGS="-gold"
+PKG_BUILD_FLAGS="-gold -sysroot"
 
 # Dependencies
 get_graphicdrivers
@@ -34,11 +34,6 @@ fi
 pre_configure_target() {
   cd $PKG_BUILD
   rm -rf .$TARGET_NAME
-
-  # pass gnutls to build
-  PKG_CONFIG_PATH="$(get_build_dir gnutls)/.INSTALL_PKG/usr/lib/pkgconfig"
-  CFLAGS="$CFLAGS -I$(get_build_dir gnutls)/.INSTALL_PKG/usr/include"
-  LDFLAGS="$LDFLAGS -L$(get_build_dir gnutls)/.INSTALL_PKG/usr/lib"
 
   if [ "$KODIPLAYER_DRIVER" == "bcm2835-driver" ]; then
     CFLAGS="$CFLAGS -DRPI=1 -I$SYSROOT_PREFIX/usr/include/IL"
@@ -180,8 +175,4 @@ configure_target() {
     `#Advanced options` \
     --disable-hardcoded-tables \
 
-}
-
-makeinstall_target() {
-  make install DESTDIR="$INSTALL/../.INSTALL_PKG"
 }

@@ -88,13 +88,8 @@ fi
 setup_toolchain ${TARGET}
 
 # configure install directory
-if [ "${TARGET}" = "target" ]; then
-  INSTALL="${PKG_BUILD}/.install_pkg"
-elif [ "${TARGET}" = "init" ]; then
-  INSTALL="${PKG_BUILD}/.install_init"
-else
-  unset INSTALL
-fi
+[ -n "${PKG_INSTALL}" ] && INSTALL="${PKG_INSTALL}" || unset INSTALL
+
 # remove previous install files
 if [ -n "${INSTALL}" -a -d "${INSTALL}" ]; then
   rm -rf "${INSTALL}"
@@ -380,10 +375,13 @@ pkg_call_exists pre_makeinstall_${TARGET} && pkg_call pre_makeinstall_${TARGET}
 if pkg_call_exists makeinstall_${TARGET}; then
   pkg_call makeinstall_${TARGET}
 else
+  flag_enabled "sysroot" "yes" && INSTALL_TO_SYSROOT="yes" || INSTALL_TO_SYSROOT="no"
+
   case "${PKG_TOOLCHAIN}:${TARGET}" in
     # ninja based builds
     "meson:target"|"cmake:target")
-      DESTDIR=${SYSROOT_PREFIX} ninja install ${PKG_MAKEINSTALL_OPTS_TARGET}
+      [ "${INSTALL_TO_SYSROOT}" = "yes" ] && \
+        DESTDIR=${SYSROOT_PREFIX} ninja install ${PKG_MAKEINSTALL_OPTS_TARGET}
       DESTDIR=${INSTALL} ninja install ${PKG_MAKEINSTALL_OPTS_TARGET}
       ;;
     "meson:host"|"cmake:host")
@@ -398,7 +396,8 @@ else
 
     # make based builds
     "configure:target"|"cmake-make:target"|"autotools:target"|"make:target")
-      make install DESTDIR=${SYSROOT_PREFIX} -j1 ${PKG_MAKEINSTALL_OPTS_TARGET}
+      [ "${INSTALL_TO_SYSROOT}" = "yes" ] && \
+        make install DESTDIR=${SYSROOT_PREFIX} -j1 ${PKG_MAKEINSTALL_OPTS_TARGET}
       make install DESTDIR=${INSTALL} ${PKG_MAKEINSTALL_OPTS_TARGET}
       ;;
     "configure:host"|"cmake-make:host"|"autotools:host"|"make:host")
@@ -450,24 +449,17 @@ export SYSROOT_PREFIX="${PKG_ORIG_SYSROOT_PREFIX}"
 
 if [ "${TARGET}" = "target" -o "${TARGET}" = "init" ]; then
   if [ -d ${INSTALL} ]; then
-    rm -rf ${INSTALL}/{usr/,}include
-    rm -rf ${INSTALL}/{usr/,}lib/cmake
-    rm -rf ${INSTALL}/{usr/,}lib/pkgconfig
-    rm -rf ${INSTALL}/{usr/,}man
-    rm -rf ${INSTALL}/{usr/,}share/aclocal
-    rm -rf ${INSTALL}/{usr/,}share/bash-completion
-    rm -rf ${INSTALL}/{usr/,}share/doc
-    rm -rf ${INSTALL}/{usr/,}share/gtk-doc
-    rm -rf ${INSTALL}/{usr/,}share/info
-    rm -rf ${INSTALL}/{usr/,}share/locale
-    rm -rf ${INSTALL}/{usr/,}share/man
-    rm -rf ${INSTALL}/{usr/,}share/pkgconfig
-    rm -rf ${INSTALL}/{usr/,}share/zsh
-    rm -rf ${INSTALL}/{usr/,}var
+    rm -rf ${INSTALL}/{usr/local/,usr/,}man
+    rm -rf ${INSTALL}/{usr/local/,usr/,}share/bash-completion
+    rm -rf ${INSTALL}/{usr/local/,usr/,}share/doc
+    rm -rf ${INSTALL}/{usr/local/,usr/,}share/gtk-doc
+    rm -rf ${INSTALL}/{usr/local/,usr/,}share/info
+    rm -rf ${INSTALL}/{usr/local/,usr/,}share/locale
+    rm -rf ${INSTALL}/{usr/local/,usr/,}share/man
+    rm -rf ${INSTALL}/{usr/local/,usr/,}share/zsh
+    rm -rf ${INSTALL}/{usr/local/,usr/,}var
     find ${INSTALL} \( -name "*.orig" \
                   -o -name "*.rej" \
-                  -o -name "*.a" \
-                  -o -name "*.la" \
                   -o -name "*.o" \
                   -o -name "*.in" \
                   -o -name ".git*" \) \
@@ -489,6 +481,10 @@ if [ "${TARGET}" = "target" -o "${TARGET}" = "init" ]; then
           -type f -executable 2>/dev/null) 2>/dev/null || :
     fi
   fi
+fi
+
+if [ -n "${INSTALL}" -a -d "${INSTALL}" ]; then
+  echo "INFO_PKG_NAME=\"${PKG_NAME}\"" > "${INSTALL}/.libreelec-package"
 fi
 
 cd ${ROOT}

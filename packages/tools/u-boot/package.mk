@@ -9,8 +9,9 @@ PKG_SITE="https://www.denx.de/wiki/U-Boot"
 PKG_DEPENDS_TARGET="toolchain swig:host"
 PKG_LONGDESC="Das U-Boot is a cross-platform bootloader for embedded systems."
 
-PKG_IS_KERNEL_PKG="yes"
 PKG_STAMP="$UBOOT_SYSTEM $UBOOT_TARGET"
+
+[ -n "$KERNEL_TOOLCHAIN" ] && PKG_DEPENDS_TARGET+=" gcc-arm-$KERNEL_TOOLCHAIN:host"
 
 if [ -n "$UBOOT_FIRMWARE" ]; then
   PKG_DEPENDS_TARGET+=" $UBOOT_FIRMWARE"

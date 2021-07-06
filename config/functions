@@ -721,8 +721,12 @@ get_pkg_variable() {
 get_build_dir() {
   local _PKG_NAME="${1%:*}" _PKG_VERSION="$(get_pkg_version "$1")"
   if [ -n "$_PKG_NAME" -a -n "$_PKG_VERSION" ]; then
-    echo $BUILD/${_PKG_NAME}-${_PKG_VERSION}
+    echo $BUILD/build/${_PKG_NAME}-${_PKG_VERSION}
   fi
+}
+
+get_install_dir() {
+  get_pkg_variable "$1" PKG_INSTALL
 }
 
 get_pkg_version() {
@@ -767,14 +771,14 @@ get_pkg_directory() {
 calculate_stamp() {
   local stamp data
 
-  stamp="$PKG_DIR $PROJECT_DIR/$PROJECT/patches/$PKG_NAME"
+  stamp="$PKG_DIR $PROJECT_DIR/$PROJECT/patches/$PKG_NAME $PROJECT_DIR/$PROJECT/packages/$PKG_NAME"
   [ -n "$DEVICE" ] && stamp+=" $PROJECT_DIR/$PROJECT/devices/$DEVICE/patches/$PKG_NAME"
   [ -n "$PKG_NEED_UNPACK" ] && stamp+=" $PKG_NEED_UNPACK"
 
-  data="$(find ${stamp} -exec sha256sum {} \; 2>/dev/null | sed "s/ ${ROOT//\//\\/}\// /")"
+  data="$(find -L ${stamp} -type f -not -name '.*' 2>/dev/null | sed "s|^${ROOT}/||" | LC_ALL=C sort -u | xargs sha256sum)"
   [ -n "${PKG_STAMP}" ] && data+=$'\n'"$(echo "${PKG_STAMP}" | sha256sum)"
 
-  echo "${data}" | sort | sha256sum | cut -d" " -f1
+  echo "${data}" | sha256sum | cut -d" " -f1
 }
 
 target_has_feature() {
@@ -950,7 +954,13 @@ source_package() {
       fi
     fi
 
-    PKG_BUILD="$BUILD/${PKG_NAME}-${PKG_VERSION}"
+    PKG_BUILD="$BUILD/build/${PKG_NAME}-${PKG_VERSION}"
+
+    if [[ "${1}" =~ :target$ || "${1//:/}" = "${1}" ]]; then
+      PKG_INSTALL="$BUILD/install_pkg/${PKG_NAME}-${PKG_VERSION}"
+    elif [[ "${1}" =~ :init$ ]]; then
+      PKG_INSTALL="$BUILD/install_init/${PKG_NAME}-${PKG_VERSION}"
+    fi
   fi
 
   build_with_debug && BUILD_WITH_DEBUG="yes" || BUILD_WITH_DEBUG="no"
@@ -1037,7 +1047,7 @@ get_module_dir() {
   if [ -n "${_CACHED_KERNEL_MODULE_DIR}" ]; then
     echo "${_CACHED_KERNEL_MODULE_DIR}"
   else
-    basename $(ls -d $(get_build_dir linux)/.install_pkg/usr/lib/kernel-overlays/base/lib/modules/*)
+    basename $(ls -d $(get_install_dir linux)/usr/lib/kernel-overlays/base/lib/modules/*)
   fi
 }
 
@@ -1081,17 +1091,17 @@ install_binary_addon() {
   local addon_id="$1" addon_so
 
   mkdir -p $ADDON_BUILD/$addon_id/
-  cp -R $PKG_BUILD/.install_pkg/usr/share/$MEDIACENTER/addons/$addon_id/* $ADDON_BUILD/$addon_id/
+  cp -R $PKG_INSTALL/usr/share/$MEDIACENTER/addons/$addon_id/* $ADDON_BUILD/$addon_id/
 
   addon_so=$(xmlstarlet sel -t -v "/addon/extension/@library_linux" $ADDON_BUILD/$addon_id/addon.xml || :)
   if [ -n "$addon_so" ]; then
-    cp -L $PKG_BUILD/.install_pkg/usr/lib/$MEDIACENTER/addons/$addon_id/$addon_so $ADDON_BUILD/$addon_id/
+    cp -L $PKG_INSTALL/usr/lib/$MEDIACENTER/addons/$addon_id/$addon_so $ADDON_BUILD/$addon_id/
     chmod +x $ADDON_BUILD/$addon_id/$addon_so
   fi
 
-  if [ -d $PKG_BUILD/.install_pkg/usr/lib/kernel-overlays/$addon_id ] ; then
+  if [ -d $PKG_INSTALL/usr/lib/kernel-overlays/$addon_id ] ; then
     mkdir -p $ADDON_BUILD/$addon_id/kernel-overlay
-    cp -PR $PKG_BUILD/.install_pkg/usr/lib/kernel-overlays/$addon_id/* $ADDON_BUILD/$addon_id/kernel-overlay
+    cp -PR $PKG_INSTALL/usr/lib/kernel-overlays/$addon_id/* $ADDON_BUILD/$addon_id/kernel-overlay
   fi
 }
 

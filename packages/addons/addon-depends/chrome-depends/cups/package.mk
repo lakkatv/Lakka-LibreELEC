@@ -10,7 +10,7 @@ PKG_SITE="http://www.cups.org"
 PKG_URL="https://github.com/apple/cups/archive/v$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain openssl zlib"
 PKG_LONGDESC="CUPS printing system."
-PKG_BUILD_FLAGS="+pic"
+PKG_BUILD_FLAGS="+pic -sysroot"
 
 PKG_CONFIGURE_OPTS_TARGET="--libdir=/usr/lib \
                            --disable-gssapi \
@@ -25,5 +25,5 @@ pre_configure_target() {
 }
 
 makeinstall_target() {
-  make BUILDROOT="$INSTALL/../.INSTALL_PKG"
+  make BUILDROOT="$INSTALL" install
 }

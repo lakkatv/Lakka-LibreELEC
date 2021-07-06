@@ -104,7 +104,7 @@ addon() {
     cp -P $(get_build_dir hid_mapper)/hid_mapper $ADDON_BUILD/$PKG_ADDON_ID/bin
 
     # htop
-    cp -P $(get_build_dir htop)/.install_pkg/usr/bin/htop $ADDON_BUILD/$PKG_ADDON_ID/bin
+    cp -P $(get_install_dir htop)/usr/bin/htop $ADDON_BUILD/$PKG_ADDON_ID/bin
 
     # i2c-tools
     cp -P $(get_build_dir i2c-tools)/tools/i2cdetect $ADDON_BUILD/$PKG_ADDON_ID/bin
@@ -119,7 +119,7 @@ addon() {
 
     # jq
     cp -P $(get_build_dir jq)/.$TARGET_NAME/jq $ADDON_BUILD/$PKG_ADDON_ID/bin
-    cp -P $(get_build_dir oniguruma)/.install_pkg/usr/lib/libonig.so $ADDON_BUILD/$PKG_ADDON_ID/lib
+    cp -P $(get_install_dir oniguruma)/usr/lib/libonig.so $ADDON_BUILD/$PKG_ADDON_ID/lib
 
     # lm_sensors
     cp -P $(get_build_dir lm_sensors)/prog/sensors/sensors $ADDON_BUILD/$PKG_ADDON_ID/bin 2>/dev/null || :
@@ -128,8 +128,8 @@ addon() {
     cp -P $(get_build_dir lshw)/src/lshw $ADDON_BUILD/$PKG_ADDON_ID/bin
 
     # mc
-    cp -Pa $(get_build_dir mc)/.install_pkg/usr/bin/* $ADDON_BUILD/$PKG_ADDON_ID/bin/
-    cp -Pa $(get_build_dir mc)/.install_pkg/storage/.kodi/addons/virtual.system-tools/* $ADDON_BUILD/$PKG_ADDON_ID
+    cp -Pa $(get_install_dir mc)/usr/bin/* $ADDON_BUILD/$PKG_ADDON_ID/bin/
+    cp -Pa $(get_install_dir mc)/storage/.kodi/addons/virtual.system-tools/* $ADDON_BUILD/$PKG_ADDON_ID
 
     # mrxvt
     cp -P $(get_build_dir mrxvt)/.$TARGET_NAME/src/mrxvt $ADDON_BUILD/$PKG_ADDON_ID/bin 2>/dev/null || :
@@ -162,7 +162,7 @@ addon() {
     cp -P $(get_build_dir strace)/.$TARGET_NAME/strace $ADDON_BUILD/$PKG_ADDON_ID/bin
 
     # stress-ng
-    cp -P $(get_build_dir stress-ng)/.install_pkg/usr/bin/stress-ng $ADDON_BUILD/$PKG_ADDON_ID/bin
+    cp -P $(get_install_dir stress-ng)/usr/bin/stress-ng $ADDON_BUILD/$PKG_ADDON_ID/bin
 
     # unrar
     cp -P $(get_build_dir unrar)/unrar $ADDON_BUILD/$PKG_ADDON_ID/bin
@@ -171,5 +171,5 @@ addon() {
     cp -P $(get_build_dir usb-modeswitch)/usb_modeswitch $ADDON_BUILD/$PKG_ADDON_ID/bin
 
     # vim
-    cp -P $(get_build_dir vim)/.install_pkg/usr/bin/vim $ADDON_BUILD/$PKG_ADDON_ID/bin
+    cp -P $(get_install_dir vim)/usr/bin/vim $ADDON_BUILD/$PKG_ADDON_ID/bin
 }

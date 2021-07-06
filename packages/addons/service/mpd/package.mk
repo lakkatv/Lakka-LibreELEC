@@ -108,6 +108,6 @@ addon() {
   cp -P $(get_build_dir mpd-mpc)/.$TARGET_NAME/mpc $ADDON_BUILD/$PKG_ADDON_ID/bin
 
   mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/lib
-  cp -p $(get_build_dir libmpdclient)/.install_pkg/usr/lib/libmpdclient.so $ADDON_BUILD/$PKG_ADDON_ID/lib
-  cp -p $(get_build_dir libmpdclient)/.install_pkg/usr/lib/libmpdclient.so.2 $ADDON_BUILD/$PKG_ADDON_ID/lib
+  cp -p $(get_install_dir libmpdclient)/usr/lib/libmpdclient.so $ADDON_BUILD/$PKG_ADDON_ID/lib
+  cp -p $(get_install_dir libmpdclient)/usr/lib/libmpdclient.so.2 $ADDON_BUILD/$PKG_ADDON_ID/lib
 }

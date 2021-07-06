@@ -29,14 +29,14 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-static \
                            --with-os-url="https://libreelec.tv""
 
 pre_configure_target() {
-  export LDFLAGS="$LDFLAGS -L$(get_build_dir ffmpeg)/.install_pkg/usr/lib"
+  export LDFLAGS="$LDFLAGS -L$(get_install_dir ffmpeg)/usr/lib"
   export LIBS="$LIBS -lid3tag -lFLAC -logg -lz -lpthread -ldl -lm"
 }
 
 addon() {
   mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/bin
-  cp -P $PKG_BUILD/.install_pkg/usr/sbin/minidlnad $ADDON_BUILD/$PKG_ADDON_ID/bin
+  cp -P $PKG_INSTALL/usr/sbin/minidlnad $ADDON_BUILD/$PKG_ADDON_ID/bin
 
   mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/lib
-  cp -p $(get_build_dir libexif)/.install_pkg/usr/lib/libexif.so.12 $ADDON_BUILD/$PKG_ADDON_ID/lib
+  cp -p $(get_install_dir libexif)/usr/lib/libexif.so.12 $ADDON_BUILD/$PKG_ADDON_ID/lib
 }

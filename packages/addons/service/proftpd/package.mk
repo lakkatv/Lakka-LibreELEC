@@ -55,7 +55,7 @@ addon() {
     cp $PKG_BUILD/.$TARGET_NAME/ftpwho  $ADDON_BUILD/$PKG_ADDON_ID/bin
     cp $PKG_BUILD/.$TARGET_NAME/ftptop  $ADDON_BUILD/$PKG_ADDON_ID/bin
 
-    cp $BUILD/whois*/mkpasswd $ADDON_BUILD/$PKG_ADDON_ID/bin
+    cp $(get_build_dir whois)/mkpasswd $ADDON_BUILD/$PKG_ADDON_ID/bin
 
   mkdir -p $ADDON_BUILD/$PKG_ADDON_ID/locale
     cp $PKG_BUILD/.$TARGET_NAME/locale/* $ADDON_BUILD/$PKG_ADDON_ID/locale

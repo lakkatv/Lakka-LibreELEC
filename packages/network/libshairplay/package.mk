@@ -13,7 +13,7 @@ PKG_LONGDESC="Apple airplay and raop protocol server"
 PKG_TOOLCHAIN="autotools"
 
 pre_configure_target() {
-  CFLAGS="$CFLAGS -I$(get_build_dir avahi)/avahi-compat-libdns_sd"
+  CFLAGS="$CFLAGS -I$SYSROOT_PREFIX/usr/include/avahi-compat-libdns_sd"
 }
 
 post_makeinstall_target() {

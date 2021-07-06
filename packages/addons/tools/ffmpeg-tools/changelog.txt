@@ -1,3 +1,6 @@
+112
+- Use system gnutls
+
 111
 - Update FFmpeg to 4.2.4
 - Update gnutls to 3.6.14

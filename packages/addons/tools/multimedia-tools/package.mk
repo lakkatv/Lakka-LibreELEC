@@ -45,10 +45,10 @@ addon() {
     cp -P $(get_build_dir mesa-demos)/.$TARGET_NAME/src/xdemos/glxinfo $ADDON_BUILD/$PKG_ADDON_ID/bin 2>/dev/null || :
 
     # mpg123
-    cp -P $(get_build_dir mpg123)/.install_pkg/usr/bin/* $ADDON_BUILD/$PKG_ADDON_ID/bin/
+    cp -P $(get_install_dir mpg123)/usr/bin/* $ADDON_BUILD/$PKG_ADDON_ID/bin/
 
     # opencaster
-    cp -P $(get_build_dir opencaster)/.install_pkg/* $ADDON_BUILD/$PKG_ADDON_ID/bin/
+    cp -P $(get_install_dir opencaster)/* $ADDON_BUILD/$PKG_ADDON_ID/bin/
 
     # squeezelite
     cp -P $(get_build_dir squeezelite)/squeezelite $ADDON_BUILD/$PKG_ADDON_ID/bin/

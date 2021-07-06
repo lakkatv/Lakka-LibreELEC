@@ -139,10 +139,28 @@ if [ "${TARGET}" = "target" ] ; then
   pkg_call_exists pre_install && pkg_call pre_install
 fi
 
-if [ "${TARGET}" = "target" -a -d ${PKG_BUILD}/.install_pkg ]; then
-  cp -PR ${PKG_BUILD}/.install_pkg/* ${INSTALL}
-elif [ "${TARGET}" = "init" -a -d ${PKG_BUILD}/.install_init ]; then
-  cp -PR ${PKG_BUILD}/.install_init/* ${INSTALL}
+if [ -n "${PKG_INSTALL}" -a -d "${PKG_INSTALL}" ]; then
+  tar \
+    -C "${PKG_INSTALL}" \
+    --exclude=./usr/local/include \
+    --exclude=./usr/local/lib/cmake \
+    --exclude=./usr/local/lib/pkgconfig \
+    --exclude=./usr/local/share/aclocal \
+    --exclude=./usr/local/share/pkgconfig \
+    --exclude=./usr/include \
+    --exclude=./usr/lib/cmake \
+    --exclude=./usr/lib/pkgconfig \
+    --exclude=./usr/share/aclocal \
+    --exclude=./usr/share/pkgconfig \
+    --exclude=./include \
+    --exclude=./lib/cmake \
+    --exclude=./lib/pkgconfig \
+    --exclude=./share/aclocal \
+    --exclude=./share/pkgconfig \
+    --exclude=./.* \
+    --exclude='*.a' \
+    --exclude='*.la' \
+    -cf - . | tar -C "${INSTALL}" -xf -
 fi
 
 if [ "${TARGET}" = "target" ] ; then

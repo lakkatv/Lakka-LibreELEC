@@ -13,7 +13,7 @@ PKG_DEPENDS_TARGET="toolchain binutils bzip2 libaio libxml2 lzo ncurses openssl 
 PKG_SHORTDESC="MariaDB is a community-developed fork of the MySQL."
 PKG_LONGDESC="MariaDB (${PKG_VERSION}) is a fast SQL database server and a drop-in replacement for MySQL."
 PKG_TOOLCHAIN="cmake"
-PKG_BUILD_FLAGS="-gold"
+PKG_BUILD_FLAGS="-gold -sysroot"
 
 PKG_IS_ADDON="yes"
 PKG_SECTION="service"
@@ -71,15 +71,13 @@ makeinstall_host() {
   :
 }
 
-makeinstall_target() {
-  # use only for addon
-  DESTDIR=${PKG_BUILD}/.install_addon ninja ${NINJA_OPTS} install
-  rm -rf "${PKG_BUILD}/.install_addon/usr/mysql-test"
+post_makeinstall_target() {
+  rm -rf "${PKG_INSTALL}/usr/mysql-test"
 }
 
 addon() {
   local ADDON="${ADDON_BUILD}/${PKG_ADDON_ID}"
-  local MARIADB="${PKG_BUILD}/.install_addon/usr"
+  local MARIADB="${PKG_INSTALL}/usr"
 
   mkdir -p ${ADDON}/bin
   mkdir -p ${ADDON}/config
